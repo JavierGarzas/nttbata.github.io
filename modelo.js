@@ -25,7 +25,7 @@
     { id: 'bolso', name: 'Bolso Lúa', category: 'Accesorios', description: 'Bolso al hombro con cierre de cremallera y bolsillo interior.', price: 34.90, tone: '#d6c5af', colors: ['Negro', 'Cacao'], sizes: ['Única'] },
   ].map((product, productIndex) => ({
     ...product,
-    image: `img/${product.id}.webp`,
+    image: `img/${product.id}.webp?v=fondo-azul`,
     variants: product.colors.flatMap((color, colorIndex) => product.sizes.map((size, sizeIndex) => ({
       color,
       size,

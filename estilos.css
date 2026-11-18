@@ -128,7 +128,7 @@ body[data-role]:not([data-role="cliente"]) .bag-button { visibility: hidden; }
 .product-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 2.2rem 1.2rem; }
 .product { min-width: 0; position: relative; }
 .product-media {
-  display: block; width: 100%; border: 0; padding: 0; background: #e5e9eb; overflow: hidden; position: relative;
+  display: block; width: 100%; border: 0; padding: 0; background: var(--tint); overflow: hidden; position: relative;
 }
 .product-media img { width: 100%; height: auto; aspect-ratio: 1; object-fit: cover; transition: transform 260ms var(--ease-out); }
 .product-media .promo { position: absolute; top: .75rem; left: .75rem; }
