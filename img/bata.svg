@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 300" role="img" aria-labelledby="title">
+  <title id="title">BA TA</title>
+  <path fill="#F5EBDD" d="M0 0h300v300H0z"/>
+  <path fill="#492B29" d="M300 0h300v300H300z"/>
+  <g fill="#492B29" fill-rule="evenodd" transform="translate(30 88) scale(1.25)">
+    <path transform="translate(-10 -15)" d="M10 15h57c20 0 33 9 33 24 0 10-6 17-15 21 14 4 22 13 22 25 0 17-15 28-38 28H40V31H10Zm46 16v22h11c11 0 17-4 17-11s-6-11-17-11Zm0 38v28h13c14 0 21-5 21-14s-7-14-21-14Z"/>
+    <path transform="translate(102 0)" d="M0 98 31 17H18V0h26c6 0 9 3 11 8l34 90H71l-8-22H26l-8 22Zm32-38h25L45 25Z"/>
+  </g>
+  <g fill="#F5EBDD" fill-rule="evenodd" transform="translate(336.875 88) scale(1.25)">
+    <path d="M0 0h84v17H50v81H33V17H0Z"/>
+    <path transform="translate(92 0)" d="M0 98 31 17H18V0h26c6 0 9 3 11 8l34 90H71l-8-22H26l-8 22Zm32-38h25L45 25Z"/>
+  </g>
+  <path fill="#492B29" d="M31.75 247.25H300v3.5H31.75a1.75 1.75 0 0 1 0-3.5Z"/>
+  <path fill="#F5EBDD" d="M300 247.25H561.375a1.75 1.75 0 0 1 0 3.5H300Z"/>
+</svg>
