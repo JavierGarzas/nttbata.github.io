@@ -146,7 +146,7 @@
   min-width: 0;
   min-height: var(--ops-control-height);
   padding: .5rem .75rem;
-  border: 1px solid var(--line);
+  border: 1px solid var(--control-edge);
   border-radius: .25rem;
   color: var(--ink);
   background: var(--paper);
@@ -201,13 +201,13 @@
 }
 
 .ops-button--secondary {
-  border-color: var(--line);
+  border-color: var(--control-edge);
   background: var(--white);
 }
 
 .ops-button--secondary:hover {
   border-color: var(--ink);
-  background: var(--sand);
+  background: var(--tint);
 }
 
 .ops-button--link {
@@ -274,7 +274,7 @@
 
 .ops-table thead th {
   color: var(--muted);
-  background: var(--sand);
+  background: var(--tint);
   font-size: .8125rem;
   font-weight: 700;
 }
@@ -313,7 +313,7 @@
   gap: .375rem;
   padding: .3125rem .625rem;
   border-radius: 2rem;
-  background: var(--sand);
+  background: var(--tint);
   color: var(--ink);
   font-size: .75rem;
   font-weight: 700;
@@ -329,19 +329,19 @@
 }
 
 .ops-status--pending {
-  color: #764427;
-  background: #f5e5d5;
+  color: var(--accent);
+  background: var(--accent-soft);
 }
 
 .ops-status--collected {
   color: var(--success);
-  background: #e6eee5;
+  background: var(--success-soft);
 }
 
 .ops-status--cancelled,
 .ops-status--expired {
   color: var(--muted);
-  background: #f1e9e4;
+  background: var(--tint);
 }
 
 .ops-records,
@@ -449,7 +449,7 @@
   padding: .375rem .625rem;
   border: 1px solid var(--line);
   border-radius: .25rem;
-  background: var(--sand);
+  background: var(--tint);
   font-size: .875rem;
   cursor: pointer;
 }
@@ -481,7 +481,7 @@
   margin: .875rem 0 0;
   padding: .625rem .75rem;
   border-inline-start: 2px solid var(--success);
-  background: #e6eee5;
+  background: var(--success-soft);
   color: var(--success);
   font-size: .875rem;
   overflow-wrap: anywhere;
@@ -499,9 +499,9 @@
 }
 
 .ops-message--error {
-  border-color: #8e3c2c;
-  background: #f9e8e2;
-  color: #793d31;
+  border-color: var(--danger);
+  background: var(--danger-soft);
+  color: var(--danger);
 }
 
 .ops-form .ops-message,

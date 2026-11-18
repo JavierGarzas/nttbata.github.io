@@ -78,7 +78,7 @@
     const roleLink = roles.find(link => link.dataset.role === role);
     for (const link of roles) link.removeAttribute('aria-current');
     roleLink.setAttribute('aria-current', 'page');
-    document.title = role === 'cliente' ? 'BATA | Reserva en tienda' : 'BATA | ' + (role === 'dueno' ? 'Dueño de tienda' : 'Caja');
+    document.title = role === 'cliente' ? 'NTT-BATA | Reserva en tienda' : 'NTT-BATA | ' + (role === 'dueno' ? 'Dueño de tienda' : 'Caja');
     if (changed) {
       if (dialog.open) dialog.close();
       clearTimeout(noticeTimer);
