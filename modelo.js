@@ -17,24 +17,44 @@
 
   const sizes = ['S', 'M', 'L'];
   const products = [
-    { id: 'americana', name: 'Americana Siena', category: 'Chaquetas', description: 'Corte recto, solapa clásica y tejido suave con cuerpo.', price: 79.90, tone: '#d2b49d', colors: ['Cacao', 'Arena'], sizes },
-    { id: 'camisa', name: 'Camisa Niebla', category: 'Camisas', description: 'Popelín de algodón, puño abotonado y silueta holgada.', price: 39.90, tone: '#e3d9c7', colors: ['Marfil', 'Azul'], sizes },
-    { id: 'pantalon', name: 'Pantalón Olmo', category: 'Pantalones', description: 'Pantalón recto de tiro alto con pinzas y bolsillos laterales.', price: 49.90, tone: '#c9b9a7', colors: ['Negro', 'Arena'], sizes: ['36', '38', '40', '42'] },
-    { id: 'jersey', name: 'Jersey Bruma', category: 'Punto', description: 'Punto acanalado, cuello redondo y manga larga.', price: 45.90, tone: '#c99c99', colors: ['Burdeos', 'Avena'], sizes },
-    { id: 'gabardina', name: 'Gabardina Alba', category: 'Abrigos', description: 'Gabardina cruzada de largo medio con cinturón ajustable.', price: 99.90, tone: '#d6bea3', colors: ['Camel', 'Oliva'], sizes },
-    { id: 'bolso', name: 'Bolso Lúa', category: 'Accesorios', description: 'Bolso al hombro con cierre de cremallera y bolsillo interior.', price: 34.90, tone: '#d6c5af', colors: ['Negro', 'Cacao'], sizes: ['Única'] },
-  ].map((product, productIndex) => ({
-    ...product,
-    image: `img/${product.id}.webp?v=fondo-azul`,
-    variants: product.colors.flatMap((color, colorIndex) => product.sizes.map((size, sizeIndex) => ({
-      color,
-      size,
-      stock: Object.fromEntries(stores.map(({ id }, storeIndex) => {
-        const quantity = (productIndex * 3 + colorIndex * 5 + sizeIndex * 2 + storeIndex * 3 + 5) % 9;
-        return [id, quantity];
-      })),
-    }))),
-  }));
+    { id: 'americana', name: 'Americana Siena', category: 'Chaquetas', description: 'Corte recto, solapa clásica y tejido suave con cuerpo.', price: 79.90, tone: '#c7d4e1', colors: ['Marino', 'Gris pizarra'], sizes },
+    { id: 'camisa', name: 'Camisa Niebla', category: 'Camisas', description: 'Popelín de algodón, puño abotonado y silueta holgada.', price: 39.90, tone: '#d6e2eb', colors: ['Marfil', 'Azul hielo'], sizes },
+    { id: 'pantalon', name: 'Pantalón Olmo', category: 'Pantalones', description: 'Pantalón recto de tiro alto con pinzas y bolsillos laterales.', price: 49.90, tone: '#cbd6e2', colors: ['Grafito', 'Azul pizarra'], sizes: ['36', '38', '40', '42'] },
+    { id: 'jersey', name: 'Jersey Bruma', category: 'Punto', description: 'Punto acanalado, cuello redondo y manga larga.', price: 45.90, tone: '#c3d8df', colors: ['Verde petróleo', 'Gris perla'], sizes },
+    { id: 'gabardina', name: 'Gabardina Alba', category: 'Abrigos', description: 'Gabardina cruzada de largo medio con cinturón ajustable.', price: 99.90, tone: '#d1dae3', colors: ['Gris piedra', 'Azul niebla'], sizes },
+    { id: 'bolso', name: 'Bolso Lúa', category: 'Accesorios', description: 'Bolso al hombro con cierre de cremallera y bolsillo interior.', price: 34.90, tone: '#c9d7e4', colors: ['Negro', 'Azul marino'], sizes: ['Única'] },
+  ].map((product, productIndex) => {
+    const [primary, alternate] = product.colors;
+    const image = `img/${product.id}.webp?v=paleta-prendas`;
+    return {
+      ...product,
+      image,
+      images: { [primary]: image, [alternate]: `img/${product.id}-alternativo.webp?v=paleta-prendas` },
+      variants: product.colors.flatMap((color, colorIndex) => product.sizes.map((size, sizeIndex) => ({
+        color,
+        size,
+        stock: Object.fromEntries(stores.map(({ id }, storeIndex) => {
+          const quantity = (productIndex * 3 + colorIndex * 5 + sizeIndex * 2 + storeIndex * 3 + 5) % 9;
+          return [id, quantity];
+        })),
+      }))),
+    };
+  });
+
+  // Previous reservation lines keep their labels and continue using the same stock.
+  const previousColors = {
+    americana: { Cacao: 'Marino', Arena: 'Gris pizarra' },
+    camisa: { Azul: 'Azul hielo' },
+    pantalon: { Negro: 'Grafito', Arena: 'Azul pizarra' },
+    jersey: { Burdeos: 'Verde petróleo', Avena: 'Gris perla' },
+    gabardina: { Camel: 'Gris piedra', Oliva: 'Azul niebla' },
+    bolso: { Cacao: 'Azul marino' },
+  };
+
+  function catalogColor(productId, color) {
+    const aliases = previousColors[productId];
+    return aliases && Object.hasOwn(aliases, color) ? aliases[color] : color;
+  }
 
   const categories = [...new Set(products.map(({ category }) => category))];
   const statuses = { pending: 'Pendiente', collected: 'Recogida', cancelled: 'Cancelada', expired: 'Vencida' };
@@ -44,12 +64,12 @@
 
   function seed(now) {
     const examples = [
-      ['centro', 'online', 'pending', 'americana', 'Cacao', 'M', 'Andrea Demo', 3 * hour],
+      ['centro', 'online', 'pending', 'americana', 'Marino', 'M', 'Andrea Demo', 3 * hour],
       ['centro', 'store', 'pending', 'camisa', 'Marfil', 'S', 'Álex Demo', 12 * hour],
-      ['campus', 'online', 'pending', 'jersey', 'Burdeos', 'M', 'Nuria Demo', 27 * hour],
+      ['campus', 'online', 'pending', 'jersey', 'Verde petróleo', 'M', 'Nuria Demo', 27 * hour],
       ['ciudad-real', 'online', 'collected', 'bolso', 'Negro', 'Única', 'Dani Demo', 3 * day],
-      ['centro', 'online', 'cancelled', 'pantalon', 'Negro', '38', 'Mar Demo', 5 * day],
-      ['campus', 'store', 'expired', 'gabardina', 'Camel', 'S', 'Luz Demo', 4 * day],
+      ['centro', 'online', 'cancelled', 'pantalon', 'Grafito', '38', 'Mar Demo', 5 * day],
+      ['campus', 'store', 'expired', 'gabardina', 'Gris piedra', 'S', 'Luz Demo', 4 * day],
     ];
 
     return {
@@ -158,14 +178,18 @@
 
   function availableStock(state, productId, color, size, storeId) {
     const product = products.find(({ id }) => id === productId);
-    const variant = product?.variants.find(item => item.color === color && item.size === size);
-    const base = variant?.stock[storeId] ?? 0;
+    const currentColor = catalogColor(productId, color);
+    const variant = product?.variants.find(item => item.color === currentColor && item.size === size);
+    const base = variant?.stock[storeId];
+    if (!base) return 0;
     const reservations = state.reservations.filter(item => item.status === 'pending' || item.status === 'collected');
     const holds = state.payments.filter(item => item.status === 'waiting');
     const used = [...reservations, ...holds].reduce((quantity, reservation) => {
       if (reservation.storeId !== storeId) return quantity;
-      const item = reservation.items.find(line => line.productId === productId && line.color === color && line.size === size);
-      return quantity + (item?.quantity ?? 0);
+      return reservation.items.reduce((total, line) => {
+        const matches = line.productId === productId && line.size === size && catalogColor(productId, line.color) === currentColor;
+        return matches ? total + line.quantity : total;
+      }, quantity);
     }, 0);
     return Math.max(0, base - used);
   }
@@ -178,9 +202,10 @@
     requireStore(storeId);
     if (!Array.isArray(items) || !items.length) throw new Error('Añade al menos un producto a la reserva.');
     const grouped = new Map();
-    for (const { productId, color, size, quantity, storeId: lineStoreId } of items) {
+    for (const { productId, color: requestedColor, size, quantity, storeId: lineStoreId } of items) {
       if (lineStoreId && lineStoreId !== storeId) throw new Error('Todos los productos deben recogerse en la misma tienda.');
       if (!Number.isSafeInteger(quantity) || quantity <= 0) throw new Error('Indica una cantidad válida.');
+      const color = catalogColor(productId, requestedColor);
       const key = [productId, color, size].join('\n');
       const previous = grouped.get(key);
       grouped.set(key, { productId, color, size, quantity: (previous?.quantity ?? 0) + quantity });

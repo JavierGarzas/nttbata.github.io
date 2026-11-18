@@ -59,7 +59,7 @@
           html(product.name) + '">' + html(product.name) + '</button></h3><span class="price">' +
           (discountPercent ? '<del>' + bata.money(originalPrice) + '</del>' : '') + bata.money(price) +
         '</span></div>' +
-        '<p>' + product.colors.length + ' colores</p>' +
+        '<p>' + html(product.colors[0]) + ' · ' + product.colors.length + ' colores</p>' +
         '<p class="product-stock' + (available ? ' in-stock' : '') + '">' +
           (available ? 'Disponible en tienda' : 'Agotado en esta tienda') + '</p>' +
       '</article>';
@@ -165,6 +165,12 @@
   function updateVariant() {
     const { value: color } = get('detalle-color');
     const { value: size } = get('detalle-talla');
+    const picture = content.querySelector('.product-detail img');
+    const image = productDetail.images[color];
+    if (picture.getAttribute('src') !== image) {
+      picture.src = image;
+      picture.alt = productDetail.name + ' en ' + color;
+    }
     const variant = variantDetails(productDetail, color, size);
     const stock = variant ? bata.stock(productDetail.id, color, size, storeId) : 0;
     const wrongStore = cartStore && cartStore !== storeId;
