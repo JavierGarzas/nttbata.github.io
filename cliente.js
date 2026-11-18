@@ -155,8 +155,8 @@
         '<p class="notice" data-variant-status aria-live="polite"></p>' +
         '<div class="field"><label for="cantidad">Unidades</label><select id="cantidad" name="quantity"></select></div>' +
         error +
-        '<button type="submit" class="button primary" data-add>Añadir a la bolsa</button>' +
-        '<button type="button" class="button text-button" data-action="cart" hidden>Ver bolsa</button>' +
+        '<button type="submit" class="button primary" data-add>Añadir a la cesta</button>' +
+        '<button type="button" class="button text-button" data-action="cart" hidden>Ver cesta</button>' +
       '</form></div>');
     get('detalle-talla').value = size;
     updateVariant();
@@ -177,7 +177,7 @@
     const blocked = Boolean(wrongStore || payment);
     const remaining = Math.max(0, stock - (wrongStore ? 0 : cartQuantity(productDetail.id, color, size)));
     const kind = remaining === 1 ? '1 unidad disponible' : remaining + ' unidades disponibles';
-    const message = remaining ? kind : (stock ? 'Ya tienes todas las unidades disponibles en la bolsa' : 'Agotado');
+    const message = remaining ? kind : (stock ? 'Ya tienes todas las unidades disponibles en la cesta' : 'Agotado');
     content.querySelector('[data-variant-status]').textContent = message + ' en ' + store(storeId).name + '.';
     const quantity = get('cantidad');
     quantity.innerHTML = Array.from({ length: remaining || 1 }, (_, index) => option(index + 1)).join('');
@@ -186,14 +186,14 @@
     const warning = content.querySelector('[data-dialog-error]');
     warning.hidden = !blocked;
     content.querySelector('[data-action="cart"]').hidden = !blocked;
-    if (payment) warning.textContent = 'Tienes un pago en curso. Abre la bolsa para continuarlo.';
-    else if (wrongStore) warning.textContent = 'Tu bolsa es de ' + store(cartStore).name + '. Cada reserva se recoge en una sola tienda.';
+    if (payment) warning.textContent = 'Tienes un pago en curso. Abre la cesta para continuarlo.';
+    else if (wrongStore) warning.textContent = 'Tu cesta es de ' + store(cartStore).name + '. Cada reserva se recoge en una sola tienda.';
   }
 
   function updateBag() {
     const count = cart.reduce((sum, item) => sum + item.quantity, 0);
     bag.querySelector('.bag-count').textContent = count;
-    bag.setAttribute('aria-label', 'Abrir bolsa, ' + count + (count === 1 ? ' artículo' : ' artículos'));
+    bag.setAttribute('aria-label', 'Abrir cesta, ' + count + (count === 1 ? ' artículo' : ' artículos'));
   }
 
   function addToCart(fields) {
@@ -208,7 +208,7 @@
     cartStore = storeId;
     updateBag();
     dialog.close();
-    flash(productDetail.name + ' se ha añadido a tu bolsa.');
+    flash(productDetail.name + ' se ha añadido a tu cesta.');
   }
 
   function summary(quote) {
@@ -224,14 +224,14 @@
   function showCart() {
     if (payment) return showPayment();
     if (!cart.length) {
-      showDialog('Tu bolsa', '<div class="empty-actions"><p>Tu bolsa está vacía. Elige una prenda y consulta sus tallas.</p><button class="button primary" type="button" data-action="browse">Ver catálogo</button></div>');
+      showDialog('Tu cesta', '<div class="empty-actions"><p>Tu cesta está vacía. Elige una prenda y consulta sus tallas.</p><button class="button primary" type="button" data-action="browse">Ver catálogo</button></div>');
       return;
     }
     const pickup = store(cartStore);
     let quote;
     let stockIssue = '';
     try { quote = cartQuote(); } catch (reason) { stockIssue = reason.message; }
-    showDialog('Tu bolsa', '<div class="dialog-form">' +
+    showDialog('Tu cesta', '<div class="dialog-form">' +
       '<div><strong>' + html(pickup.name) + '</strong><p class="pickup-address">' + html(pickup.address) + '</p></div>' +
       '<ul class="cart-lines">' + cart.map((item, index) => {
         const line = quote?.items[index];
@@ -268,7 +268,7 @@
       '</fieldset>' + summary(quote) + error +
       '<div class="dialog-actions"><button class="button primary" type="submit" data-confirm-reservation>' +
       (contact.payment === 'online' ? 'Continuar al pago de prueba' : 'Confirmar reserva') +
-      '</button><button class="button text-button" type="button" data-action="cart">Volver a la bolsa</button></div></form>');
+      '</button><button class="button text-button" type="button" data-action="cart">Volver a la cesta</button></div></form>');
     if (message) showError(message);
   }
 
